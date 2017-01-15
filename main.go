@@ -93,6 +93,7 @@ func template_reg() {
 }
 
 /*
+
 func TmpMethod(p ...interface{}) interface{} {
 	fmt.Println(p)
 	maps := make(map[string]interface{})

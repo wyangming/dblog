@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{{i18n .Lang "page_sys_post_man_title"}}</title>
+  {{template "sys/inc/meta.html" .}}
+</head>
+<body>
+	{{template "sys/inc/left.html" .}}
+	<div class="right-side">
+		<table class="table">
+			<thead>
+				<th>{{i18n .Lang "page_sys_post_man_col_title"}}</th>
+				<th>{{i18n .Lang "page_sys_post_man_col_author"}}</th>
+				<th>{{i18n .Lang "page_sys_post_man_col_term"}}</th>
+				<th>{{i18n .Lang "page_sys_post_man_col_tags"}}</th>
+				<th>{{i18n .Lang "page_sys_post_man_col_reltime"}}</th>
+				<th>{{i18n .Lang "page_lable_action"}}</th>
+			</thead>
+			{{$lbl_edit := i18n .Lang "page_lable_edit"}}
+    		{{$lbl_del := i18n .Lang "page_lable_delete"}}
+			{{if .posts}}
+		  		{{range $k,$v := .posts}}
+		  			<tr>
+		          		<td>{{$v.Title}}</td>
+		  				<td>{{$v.Author}}</td>
+		  				<td>{{$v.PTermName}}</td>
+		  				<td>{{$v.Tags}}</td>
+		  				<td>
+		  					{{if eq 2 $v.Active}}
+		  						草稿<br>
+		  						<abbr style="font-size: 0.9rem" title="{{$v.UpdateTime}}">{{dateformat $v.UpdateTime "2006-01-02"}}</abbr>
+		  					{{else}}
+		  						已发布<br>
+		  						<abbr style="font-size: 0.9rem" title="{{$v.UpdateTime}}">{{dateformat $v.ReleaseTime "2006-01-02"}}</abbr>
+		  					{{end}}
+		  				</td>
+		  				<td>
+		  					<a href="/sys/posts/posts/toadd?id={{$v.Id}}" class="btn btn-primary-outline btn-sm">{{$lbl_edit}}</a>&nbsp;
+				            <a href="javascript:void(0);" class="btn btn-warning-outline btn-sm btn_db_del">
+				              {{$lbl_del}}
+				            </a>
+		  				</td>
+		  			</tr>
+		  		{{end}}
+		  	{{end}}
+		</table>
+		{{template "sys/inc/page.html" .}}
+	</div>
+</body>
+</html>
+{{template "sys/inc/foot.html" .}}

@@ -1,0 +1,58 @@
+<div class="left-side">
+	<div id="accordion" role="tablist" aria-multiselectable="true" class="left-accordion">
+	  <div class="panel panel-default">
+	    <div class="panel-heading" role="tab" id="heading1">
+	        <a class="panel-title list-group-item" data-toggle="collapse" data-parent="#accordion" href="#collapse1" aria-expanded="true" aria-controls="collapse1">
+	          {{i18n .Lang "menu_term_common"}}
+	        </a>
+	    </div>
+	    <div id="collapse1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading1">
+	      <div class="list-group">
+	      		<a class="list-group-item" href="/sys">{{i18n .Lang "menu_term_index"}}</a>
+	      		<a class="list-group-item" href="/sys/posts/term/toadd">{{i18n .Lang "menu_term_add"}}</a>
+				<a class="list-group-item" href="/sys/posts/term">{{i18n .Lang "menu_term_manger"}}</a>
+				<a class="list-group-item" href="/sys/posts/posts">{{i18n .Lang "menu_posts_manger"}}</a>
+				<a class="list-group-item" href="/sys/posts/posts/toadd">{{i18n .Lang "menu_posts_add"}}</a>
+			</div>
+	    </div>
+	  </div>
+
+	  <div class="panel panel-default">
+	    <div class="panel-heading" role="tab" id="heading2">
+	        <a class="panel-title list-group-item" data-toggle="collapse" data-parent="#accordion" href="#collapse2" aria-expanded="true" aria-controls="collapse2">
+	          常用2
+	        </a>
+	    </div>
+	    <div id="collapse2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading2">
+	      常用内容2
+	    </div>
+	  </div>
+
+	  <div class="panel panel-default">
+	    <div class="panel-heading" role="tab" id="heading3">
+	        <a class="panel-title list-group-item" data-toggle="collapse" data-parent="#accordion" href="#collapse3" aria-expanded="true" aria-controls="collapse3">
+	          常用3
+	        </a>
+	    </div>
+	    <div id="collapse3" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading3">
+	      常用内容3
+	    </div>
+	  </div>
+
+	  <div class="panel panel-default">
+	    <div class="panel-heading" role="tab" id="heading4">
+	        <a class="panel-title list-group-item" data-toggle="collapse" data-parent="#accordion" href="#collapse4" aria-expanded="true" aria-controls="collapse4">
+	          常用4
+	        </a>
+	    </div>
+	    <div id="collapse4" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading4">
+	      常用内容4
+	    </div>
+	  </div>
+	  
+	</div>
+</div>
+<!--右侧顶部-->
+<div class="right-side" style="background-color: blue;">
+	<h2 style="display: inline-block;">{{i18n .Lang "page_sys_main_title"}}</h2>
+</div>

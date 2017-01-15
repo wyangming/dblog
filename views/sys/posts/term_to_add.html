@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{{i18n .Lang "page_sys_term_add_title"}}</title>
+  {{template "sys/inc/meta.html" .}}
+</head>
+
+<body>
+{{template "sys/inc/left.html" .}}
+<div class="right-side">
+<div class="container">
+
+	{{if .msg}}
+		<div class="alert alert-danger alert-dismissible fade in" role="alert">
+		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		    <span aria-hidden="true">&times;</span>
+		    <span class="sr-only">Close</span>
+		  </button>
+		  <strong>{{.msg}}</strong>
+		</div>
+	{{else}}
+	{{end}}
+	<form method="post" action="/sys/posts/term/save">
+		<input type="hidden" name="id" value="{{.term.Id}}" />
+		<input type="hidden" name="p_term_id" value="{{.term.ParentId}}" />
+		<!-- 父级栏目 -->
+		<fieldset class="form-group">
+			<label for="p_term_name">{{i18n .Lang "page_sys_term_add_lable_partent"}}</label>
+			<input type="text" id="p_term_name" class="form-control" placeholder="{{i18n .Lang "page_sys_term_add_lable_partent"}}" name="p_term_name" readonly="true" value="{{.term.PTermName}}" />
+		</fieldset>
+		<!-- 栏目名称 -->
+		<fieldset class="form-group">
+			<label for="term_name">{{i18n .Lang "page_sys_term_add_lable_name"}}</label>
+			<input type="text" id="term_name" class="form-control" placeholder="{{i18n .Lang "page_sys_term_add_lable_name"}}" name="term_name" value="{{.term.TermName}}" />
+		</fieldset>
+		<!-- 栏目标签 -->
+		<fieldset class="form-group">
+			<label for="term_tags">{{i18n .Lang "page_sys_term_add_lable_tags"}}</label>
+			<input type="text" id="term_tags" name="term_tags" class="form-control" placeholder="{{i18n .Lang "page_sys_term_add_lable_tags"}}" value="{{.term.TermTag}}" />
+			<small class="text-muted">{{i18n .Lang "page_sys_term_add_msg_tags"}}</small>
+		</fieldset>
+		<!-- 栏目url -->
+		<fieldset class="form-group">
+			<label for="term_url">{{i18n .Lang "page_sys_term_add_lable_slug"}}</label>
+			<input type="text" name="term_url" id="term_url" class="form-control" placeholder="{{i18n .Lang "page_sys_term_add_lable_slug"}}" value="{{.term.Slug}}" />
+			<small class="text-muted">{{i18n .Lang "page_sys_term_add_msg_slug"}}</small>
+		</fieldset>
+		<!-- 栏目描述 -->
+		<fieldset class="form-group">
+			<label for="term_des">{{i18n .Lang "page_sys_term_add_lable_des"}}</label>
+			<input type="text" name="term_des" id="term_des" class="form-control" placeholder="{{i18n .Lang "page_sys_term_add_lable_des"}}" value="{{.term.Description}}" />
+		</fieldset>
+		<!-- 添加按钮 -->
+		<input type="submit" class="btn btn-success" value="{{if .term}}{{i18n .Lang "page_btn_save"}}{{else}}{{i18n .Lang "page_btn_add"}}{{end}}" />
+	</form>
+</div>
+</div>
+</body>
+</html>
+{{template "sys/inc/foot.html" .}}

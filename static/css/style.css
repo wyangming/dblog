@@ -1,0 +1,28 @@
+.input-error{
+	border-color: #f90202;
+}
+/*主页面左侧*/
+.left-side{
+	width: 160px; background-color: #3d3d3d; position: fixed; height: 100%;
+	line-height: 1;
+}
+.left-side .left-accordion{
+	color: #fff; font-weight: bold;
+}
+/*父级菜单的a标签*/
+.left-side .left-accordion .panel-heading a{
+	border-radius: 0px; background-color: #303030; border-color: #484646 #303030 #303030 #303030; color: #fff; font-weight: bold;
+}
+/*子项的a标签*/
+.left-side .left-accordion .list-group a{
+	border-radius: 0px; background-color: #3d3d3d; border-color: #3d3d3d; color: #fff; font-weight: bold; padding-left: 1.75rem;
+}
+
+/*主页面右侧*/
+.right-side{
+	margin-left: 160px; margin-top: 0px; padding: 1.25rem;
+}
+/*分页控件外的*/
+.right-side .nav-page{
+	text-align: center;
+}

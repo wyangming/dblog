@@ -1,0 +1,32 @@
+{{if .page}}
+<nav class="nav-page">
+  <ul class="pagination pagination-sm">
+    {{if .page.HasPrev}}
+    	<li>
+    		<a href="?paged={{$.page.FirstPage}}">首页</a>
+    	</li>
+    	<li>
+    		<a href="?paged={{$.page.PrevPage}}">上一页</a>
+    	</li>
+    {{end}}
+    {{range $index, $pagesingle := .page.Pages}}
+    	
+        {{if $.page.IsActive .}}
+          <li class="active"><a href="#">{{$pagesingle}}</a></li>
+        {{else}}
+          <li><a href="?paged={{$pagesingle}}">{{$pagesingle}}</a></li>
+        {{end}}
+    		
+    	
+    {{end}}
+    {{if .page.HasNext}}
+    	<li>
+    		<a href="?paged={{$.page.NextPage}}">下一页</a>
+    	</li>
+    	<li>
+    		<a href="?paged={{$.page.LastPage}}">尾页</a>
+    	</li>
+    {{end}}
+  </ul>
+</nav>
+{{end}}

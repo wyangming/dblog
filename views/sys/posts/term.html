@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{{i18n .Lang "page_sys_term_man_title"}}</title>
+  {{template "sys/inc/meta.html" .}}
+</head>
+<!--添加子栏目没有做-->
+<body>
+{{template "sys/inc/left.html" .}}
+<div class="right-side">
+  <table class="table">
+    <thead>
+    	<tr>
+        <th>{{i18n .Lang "page_sys_term_man_col_pname"}}</th>
+    		<th>{{i18n .Lang "page_sys_term_man_col_name"}}</th>
+    		<th>{{i18n .Lang "page_sys_term_man_col_slug"}}</th>
+    		<th>{{i18n .Lang "page_sys_term_man_col_sort"}}</th>
+    		<th>{{i18n .Lang "page_sys_term_man_col_cretime"}}</th>
+    		<th>{{i18n .Lang "page_sys_term_man_col_updtime"}}</th>
+    		<th>{{i18n .Lang "page_sys_term_man_col_creuser"}}</th>
+        <th>{{i18n .Lang "page_lable_action"}}</th>
+    	</tr>
+    </thead>
+    {{$lbl_edit := i18n .Lang "page_lable_edit"}}
+    {{$lbl_del := i18n .Lang "page_lable_delete"}}
+    {{$lbl_add_child := i18n .Lang "page_sys_term_man_btn_addChild"}}
+  	{{if .terms}}
+  		{{range $k,$v := .terms}}
+  			<tr>
+          <td>{{$v.PTermName}}</td>
+  				<td>{{$v.TermName}}</td>
+  				<td>{{$v.Slug}}</td>
+  				<td>{{$v.Sort}}</td>
+  				<td>{{dateformat $v.CreateTime "2006-01-02"}}</td>
+  				<td>{{dateformat $v.UpdateTime "2006-01-02"}}</td>
+  				<td>{{$v.CreateName}}</td>
+          <td>
+            <!--<a href="javascript:void(0);" class="btn btn-success-outline btn-sm">{{$lbl_add_child}}</a>&nbsp;-->
+            <a href="/sys/posts/term/toadd?id={{$v.Id}}" class="btn btn-primary-outline btn-sm">{{$lbl_edit}}</a>&nbsp;
+            <a href="javascript:void(0);" class="btn btn-warning-outline btn-sm btn_db_del">
+              {{$lbl_del}}
+              <input type="hidden" value="{{$v.Id}}">
+            </a>
+          </td>
+  			</tr>
+  		{{end}}
+  	{{end}}
+  </table>
+  {{template "sys/inc/page.html" .}}
+</div>
+</body>
+</html>
+{{template "sys/inc/foot.html" .}}
+<script type="text/javascript">
+  jQuery(document).ready(function() {
+    jQuery(".btn_db_del").click(function(){
+      var hid = jQuery(this).children("input:hidden").val();
+      jQuery.ajax({
+        url:"/sys/posts/term/remove",
+        async:false,
+        data:{id:hid},
+        dataType:"json",
+        success:function(data,textStatus){
+          if (data.res) {
+            alert(data.msg);
+            location.reload();
+          }else{
+            alert(data.msg);
+          }
+        },
+        error:function(){
+          alert({{i18n .Lang "page_sql_err_msg"}});
+        }
+      });
+    });
+  });
+</script>

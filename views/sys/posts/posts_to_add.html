@@ -18,7 +18,7 @@
 				</div>
 			{{end}}
 			<form method="post" action="/sys/posts/posts/save">
-				<input type="hidden" id="post_id" name="id" value="" />
+				<input type="hidden" id="post_id" name="id" value="{{.post.Id}}" />
 				<!-- 文章所属的栏目 -->
 				<fieldset class="form-group">
 					<label for="term_id">{{i18n .Lang "page_sys_post_add_lable_term"}}</label>

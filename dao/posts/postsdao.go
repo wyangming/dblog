@@ -22,6 +22,8 @@ type IPostsDao interface {
 	Find(offset, rows int64, filter *map[string]interface{}) (nums int64, terms []ViewPosts, err error)
 	//根据编号查询
 	FindById(id int64) (ViewPosts, error)
+	//单独修改一个属性的值
+	UpdateSinglePro(id int64, proName string, val interface{}) (bool, error)
 }
 
 func AutoPostsDao() IPostsDao {
@@ -108,7 +110,7 @@ func (this postsDao) Find(offset, pagesize int64, filter *map[string]interface{}
 	//设置分页查询
 	params = append(params, offset)
 	params = append(params, pagesize)
-	from_end = fmt.Sprintf("%s and p.active!=1 and tp.active!=1 and t.active!=1 and u.active!=1", from_end)
+	from_end = fmt.Sprintf("%s and p.active!=1 and tp.active!=1 and t.active!=1 and u.active!=1 order by p.update_time desc", from_end)
 	rows, err := db.Query(fmt.Sprintf("select %s from %s", columns, dao.AppendPageInfo(from_end, offset, pagesize)), params...)
 	defer rows.Close()
 	if err != nil {
@@ -122,6 +124,33 @@ func (this postsDao) Find(offset, pagesize int64, filter *map[string]interface{}
 	}
 	//查询副栏目的编号
 	return
+}
+
+//根据id修改一个属性的值
+func (this postsDao) UpdateSinglePro(id int64, proName string, val interface{}) (bool, error) {
+	if id < 1 || len(proName) < 1 || val == nil {
+		return false, nil
+	}
+	update_sql := fmt.Sprintf("update db_posts set %s=?", proName)
+	params := make([]interface{}, 0)
+	int_val, ok := val.(int)
+	params = append(params, int_val)
+	if ok && int_val == 0 {
+		update_sql = fmt.Sprintf("%s, release_time=?", update_sql)
+		now_time := time.Now()
+		params = append(params, now_time)
+	}
+	update_sql = fmt.Sprintf("%s where id=?", update_sql)
+	params = append(params, id)
+	db := dao.NewDB()
+	res, err := db.Exec(update_sql, params...)
+	if err != nil {
+		return false, err
+	}
+	if count, _ := res.RowsAffected(); count > 0 {
+		return true, nil
+	}
+	return false, nil
 }
 
 //返回单个文章内容
@@ -288,7 +317,7 @@ func postTermParams(params *[]interface{}, postid, termsid int64, mainTerm bool)
 
 //修改一个文章信息
 func update(db *sql.Tx, post *models.DbPosts) (bool, error) {
-	update_sql := "update db_posts set title=?, shot_title=?, tags=?, source_url=?, author=?, summary=?, html_content=?, text_content==?," +
+	update_sql := "update db_posts set title=?, shot_title=?, tags=?, source_url=?, author=?, summary=?, html_content=?, text_content=?," +
 		" release_time=?, update_time=?, create_time=?, create_user=?, site_id=? where id=? and active!=1"
 	res, err := db.Exec(update_sql, post.Title, post.ShotTitle, post.Tags, post.SourceUrl,
 		post.Author, post.Summary, post.HtmlContent, post.TextContent, post.ReleaseTime, post.UpdateTime, post.CreateTime,
@@ -297,9 +326,9 @@ func update(db *sql.Tx, post *models.DbPosts) (bool, error) {
 		return false, err
 	}
 	if count, _ := res.RowsAffected(); count > 0 {
-		return false, nil
+		return true, nil
 	}
-	return true, nil
+	return false, nil
 }
 
 //保存一个文章信息

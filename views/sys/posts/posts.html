@@ -18,6 +18,8 @@
 			</thead>
 			{{$lbl_edit := i18n .Lang "page_lable_edit"}}
     		{{$lbl_del := i18n .Lang "page_lable_delete"}}
+    		{{$lbl_rep := i18n .Lang "page_sys_post_btn_replase"}}
+    		{{$lbl_red := i18n .Lang "page_sys_post_btn_read"}}
 			{{if .posts}}
 		  		{{range $k,$v := .posts}}
 		  			<tr>
@@ -35,6 +37,13 @@
 		  					{{end}}
 		  				</td>
 		  				<td>
+		  					<input type="hidden" value="{{$v.Id}}">
+		  					{{if eq 2 $v.Active}}
+		  						<a href="javascript:void(0);" class="btn btn-success-outline btn-sm btn_db_replase">{{$lbl_rep}}</a>
+		  					{{else}}
+		  						<a href="javascript:void(0);" class="btn btn-success-outline btn-sm">{{$lbl_red}}</a>
+		  					{{end}}
+		  					&nbsp;
 		  					<a href="/sys/posts/posts/toadd?id={{$v.Id}}" class="btn btn-primary-outline btn-sm">{{$lbl_edit}}</a>&nbsp;
 				            <a href="javascript:void(0);" class="btn btn-warning-outline btn-sm btn_db_del">
 				              {{$lbl_del}}
@@ -49,3 +58,38 @@
 </body>
 </html>
 {{template "sys/inc/foot.html" .}}
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+		function statusAction(type_str, control){
+			var url = "/sys/posts/posts/release";
+			if ("del" == type_str) {
+				url = "/sys/posts/posts/del";
+			}
+			var hid = jQuery(control).parent().children("input:hidden").val();
+			jQuery.ajax({
+		        url:url,
+		        async:false,
+		        data:{id:hid},
+		        dataType:"json",
+		        success:function(data,textStatus){
+		          if (data.res) {
+		            location.reload();
+		          }else{
+		            alert(data.msg);
+		          }
+		        },
+		        error:function(){
+		          alert({{i18n .Lang "page_sql_err_msg"}});
+		        }
+	      	});
+		}
+		//发布按钮事件
+		jQuery(".btn_db_replase").click(function(){
+			statusAction("",this)
+		});
+		//删除按钮事件
+		jQuery(".btn_db_del").click(function(){
+			statusAction("del",this)
+		});
+	});
+</script>

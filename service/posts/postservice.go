@@ -14,6 +14,9 @@ type IPostService interface {
 	Find(offset, rows int64, filter *map[string]interface{}) (nums int64, terms []posts.ViewPosts, err error)
 	//根据编号查询
 	FindById(id int64) (posts.ViewPosts, error)
+	//修改文章状态
+	//type_str操作类型replase发布 del删除
+	UpdateStatus(id int64, type_str string) (bool, error)
 }
 
 //得到接口实例
@@ -46,4 +49,25 @@ func (this postService) FindById(id int64) (posts.ViewPosts, error) {
 	}
 	postsDao := posts.AutoPostsDao()
 	return postsDao.FindById(id)
+}
+
+//修改文章状态
+func (this postService) UpdateStatus(id int64, type_str string) (bool, error) {
+	if id < 1 || len(type_str) < 1 {
+		return false, nil
+	}
+	var (
+		bol = false
+		err error
+	)
+	postsDao := posts.AutoPostsDao()
+	switch type_str {
+	case "replase":
+		bol, err = postsDao.UpdateSinglePro(id, "active", 0)
+		break
+	case "del":
+		bol, err = postsDao.UpdateSinglePro(id, "active", 1)
+		break
+	}
+	return bol, err
 }

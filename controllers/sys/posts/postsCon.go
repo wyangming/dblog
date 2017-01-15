@@ -79,6 +79,8 @@ func (this *PostsControllers) Save() {
 		posts.SiteId = web.GetSySiteId(this.Controller)
 		action_type = this.Tr("page_btn_add")
 	} else {
+		postView, _ := postService.FindById(int64(id))
+		posts = &postView.DbPosts
 		posts.Id = int64(id)
 	}
 	//处理文章信息
@@ -111,4 +113,42 @@ func (this *PostsControllers) Save() {
 	}
 	this.Data["msg"] = fmt.Sprintf("%s%s%s%s", action_str, posts.Title, action_type, this.Tr("control_sys_result_success"))
 	addPageInfo(this)
+}
+
+//发布文章
+func (this *PostsControllers) Release() {
+	res, err := updateStatus("replase", this)
+	if err != nil {
+		beego.Error(err)
+	}
+	if !res {
+		this.DbJsonMsg("page_sql_err_msg", false)
+		this.ServeJSON()
+	}
+	this.DbJsonMsg("", true)
+	this.ServeJSON()
+}
+
+//修改状态
+func updateStatus(type_str string, this *PostsControllers) (bool, error) {
+	id, _ := this.GetInt("id")
+	if id < 1 {
+		return false, nil
+	}
+	postService := posts.AutoPostsService()
+	return postService.UpdateStatus(int64(id), type_str)
+}
+
+//删除文章
+func (this *PostsControllers) Delete() {
+	res, err := updateStatus("del", this)
+	if err != nil {
+		beego.Error(err)
+	}
+	if !res {
+		this.DbJsonMsg("page_sys_post_msg_del_err", false)
+		this.ServeJSON()
+	}
+	this.DbJsonMsg("", true)
+	this.ServeJSON()
 }

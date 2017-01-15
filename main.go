@@ -4,6 +4,7 @@ package main
 
 //待完美的功能
 //栏目添加修改时没有用js验证
+//文章添加修改时没有用js验证，预览功能也没有做
 
 import (
 	"dblog/controllers"
@@ -59,6 +60,10 @@ func router_reg() {
 	beego.Router("/sys/posts/posts/toadd", postsCon, "*:ToAdd")
 	//保存文章信息
 	beego.Router("/sys/posts/posts/save", postsCon, "*:Save")
+	//文章发布
+	beego.Router("/sys/posts/posts/release", postsCon, "*:Release")
+	//删除文章
+	beego.Router("/sys/posts/posts/del", postsCon, "*:Delete")
 
 	fmt.Println("router regin over...")
 }

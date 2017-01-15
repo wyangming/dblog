@@ -27,7 +27,9 @@ type SysBaseController struct {
 //这里只有msg提示信息，跟res返回结果两种
 func (this *SysBaseController) DbJsonMsg(i18n_str string, bolean bool) {
 	res := make(map[string]interface{})
-	res["msg"] = this.Tr(i18n_str)
+	if len(i18n_str) > 0 {
+		res["msg"] = this.Tr(i18n_str)
+	}
 	res["res"] = bolean
 	this.Data["json"] = res
 }

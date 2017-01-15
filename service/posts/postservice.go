@@ -41,6 +41,9 @@ func (this postService) Find(offset, rows int64, filter *map[string]interface{})
 
 //根据编号查询
 func (this postService) FindById(id int64) (posts.ViewPosts, error) {
+	if id < 1 {
+		return posts.ViewPosts{}, nil
+	}
 	postsDao := posts.AutoPostsDao()
 	return postsDao.FindById(id)
 }

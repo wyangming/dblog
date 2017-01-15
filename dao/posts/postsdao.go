@@ -71,7 +71,7 @@ func (this postsDao) FindById(id int64) (term ViewPosts, err error) {
 		}
 	}
 	//查询副栏目信息
-	sel_sql := "select t.id,t.term_name from db_terms t left join db_term_posts tp on t.id=tp.term_id where tp.post_id=? and t.active!=1"
+	sel_sql := "select t.id,t.term_name from db_terms t left join db_term_posts tp on t.id=tp.term_id where tp.post_id=? and t.active!=1 and tp.main_posts=1"
 	rows_f, err := db.Query(sel_sql, params...)
 	defer rows_f.Close()
 	if err != nil {
@@ -81,7 +81,7 @@ func (this postsDao) FindById(id int64) (term ViewPosts, err error) {
 	for rows_f.Next() {
 		var id sql.NullInt64
 		var term_name sql.NullString
-		err = rows.Scan(&id, &term_name)
+		err = rows_f.Scan(&id, &term_name)
 		if err != nil {
 			continue
 		}

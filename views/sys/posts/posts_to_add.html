@@ -25,7 +25,7 @@
 					<select class="form-control" id="term_id" name="term_id">
 						{{if .terms}}
 					  		{{range $k,$v := .terms}}
-					  			<option value="{{$v.Id}}">{{$v.TermName}}</option>
+					  			<option value="{{$v.Id}}"{{if eq $v.Id $.post.TermId}} selected="true"{{end}}>{{$v.TermName}}</option>
 					  		{{end}}
 					  	{{end}}
 				    </select>
@@ -33,38 +33,38 @@
 				<!-- 文章标题 -->
 				<fieldset class="form-group">
 					<label for="post_title">{{i18n .Lang "page_sys_post_add_lable_title"}}</label>
-					<input type="text" id="post_title" class="form-control" placeholder="{{i18n .Lang "page_sys_post_add_lable_title"}}" name="post_title" value="" />
+					<input type="text" id="post_title" class="form-control" placeholder="{{i18n .Lang "page_sys_post_add_lable_title"}}" name="post_title" value="{{.post.Title}}" />
 				</fieldset>
 				<!-- 文章短标题 -->
 				<fieldset class="form-group">
 					<label for="post_stitle">{{i18n .Lang "page_sys_post_add_lable_stitle"}}</label>
-					<input type="text" id="post_stitle" class="form-control" placeholder="{{i18n .Lang "page_sys_post_add_lable_stitle"}}" name="post_stitle" value="" />
+					<input type="text" id="post_stitle" class="form-control" placeholder="{{i18n .Lang "page_sys_post_add_lable_stitle"}}" name="post_stitle" value="{{.post.ShotTitle}}" />
 				</fieldset>
 				<!-- 文章标签 -->
 				<fieldset class="form-group">
 					<label for="post_tags">{{i18n .Lang "page_sys_post_add_lable_tags"}}</label>
-					<input type="text" id="post_tags" class="form-control" placeholder="{{i18n .Lang "page_sys_post_add_lable_tags"}}" name="post_tags" value="" />
+					<input type="text" id="post_tags" class="form-control" placeholder="{{i18n .Lang "page_sys_post_add_lable_tags"}}" name="post_tags" value="{{.post.Tags}}" />
 					<small class="text-muted">{{i18n .Lang "page_sys_post_add_msg_tags"}}</small>
 				</fieldset>
 				<!-- 文章来源 -->
 				<fieldset class="form-group">
 					<label for="post_source_url">{{i18n .Lang "page_sys_post_add_lable_source"}}</label>
-					<input type="text" id="post_source_url" class="form-control" placeholder="{{i18n .Lang "page_sys_post_add_lable_source"}}" name="post_source_url" value="" />
+					<input type="text" id="post_source_url" class="form-control" placeholder="{{i18n .Lang "page_sys_post_add_lable_source"}}" name="post_source_url" value="{{.post.SourceUrl}}" />
 				</fieldset>
 				<!-- 文章作者 -->
 				<fieldset class="form-group">
 					<label for="post_author">{{i18n .Lang "page_sys_post_add_lable_author"}}</label>
-					<input type="text" id="post_author" class="form-control" placeholder="{{i18n .Lang "page_sys_post_add_lable_author"}}" name="post_author" value="" />
+					<input type="text" id="post_author" class="form-control" placeholder="{{i18n .Lang "page_sys_post_add_lable_author"}}" name="post_author" value="{{.post.Author}}" />
 				</fieldset>
 				<!-- 文章摘要 -->
 				<fieldset class="form-group">
 					<label for="post_summary">{{i18n .Lang "page_sys_post_add_lable_summary"}}</label>
-					<textarea id="post_summary" class="form-control" placeholder="{{i18n .Lang "page_sys_post_add_lable_summary"}}" rows="5" name="post_summary"></textarea>
+					<textarea id="post_summary" class="form-control" placeholder="{{i18n .Lang "page_sys_post_add_lable_summary"}}" rows="5" name="post_summary">{{.post.Summary}}</textarea>
 				</fieldset>
 				<!-- 文章内容 -->
 				<fieldset class="form-group">
 					<label for="post_content">{{i18n .Lang "page_sys_post_add_lable_context"}}</label>
-					<textarea id="post_content" name="post_content"></textarea>
+					<textarea id="post_content" name="post_content">{{.post.HtmlContent}}</textarea>
 				</fieldset>
 				<!-- 表单按钮 -->
 				<input type="submit" class="btn btn-success" value="{{if .term}}{{i18n .Lang "page_btn_save"}}{{else}}{{i18n .Lang "page_btn_add"}}{{end}}" />

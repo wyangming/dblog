@@ -55,9 +55,13 @@ func (this *PostsControllers) ToAdd() {
 func addPageInfo(this *PostsControllers) {
 	this.TplName = "sys/posts/posts_to_add.html"
 	//所有的栏目信息
-	postService := posts.AutoTermService()
-	terms, _ := postService.FindAll()
+	termService := posts.AutoTermService()
+	terms, _ := termService.FindAll()
 	this.Data["terms"] = terms
+	//空文章信息
+	postService := posts.AutoPostsService()
+	post, _ := postService.FindById(int64(0))
+	this.Data["post"] = post
 }
 
 //保存一个文章信息

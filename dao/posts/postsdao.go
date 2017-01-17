@@ -49,7 +49,7 @@ type ViewPosts struct {
 }
 
 //根据编号查询
-func (this postsDao) FindById(id int64) (term ViewPosts, err error) {
+func (this *postsDao) FindById(id int64) (term ViewPosts, err error) {
 	if id < 1 {
 		return
 	}
@@ -94,7 +94,7 @@ func (this postsDao) FindById(id int64) (term ViewPosts, err error) {
 }
 
 //查询文章信息
-func (this postsDao) Find(offset, pagesize int64, filter *map[string]interface{}) (nums int64, terms []ViewPosts, err error) {
+func (this *postsDao) Find(offset, pagesize int64, filter *map[string]interface{}) (nums int64, terms []ViewPosts, err error) {
 	if pagesize < 1 {
 		return
 	}
@@ -127,7 +127,7 @@ func (this postsDao) Find(offset, pagesize int64, filter *map[string]interface{}
 }
 
 //根据id修改一个属性的值
-func (this postsDao) UpdateSinglePro(id int64, proName string, val interface{}) (bool, error) {
+func (this *postsDao) UpdateSinglePro(id int64, proName string, val interface{}) (bool, error) {
 	if id < 1 || len(proName) < 1 || val == nil {
 		return false, nil
 	}
@@ -212,7 +212,7 @@ func viewPost(rows *sql.Rows, hasCon, hasSum bool) (ViewPosts, error) {
 }
 
 //查询在一个栏目下是否还有文章
-func (this postsDao) FindHasByTermId(termId int64) (bool, error) {
+func (this *postsDao) FindHasByTermId(termId int64) (bool, error) {
 	if termId < 1 {
 		return false, nil
 	}
@@ -238,7 +238,7 @@ func (this postsDao) FindHasByTermId(termId int64) (bool, error) {
 }
 
 //保存文章信息
-func (this postsDao) SavePost(info map[string]interface{}) (bool, error) {
+func (this *postsDao) SavePost(info map[string]interface{}) (bool, error) {
 	id := info["id"].(int64)
 	post, _ := info["post"].(*models.DbPosts)
 	term_id := info["term_id"].(int64)

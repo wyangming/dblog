@@ -47,7 +47,6 @@ func (this *PostsControllers) ToAdd() {
 	if err != nil {
 		beego.Error(err)
 	}
-	fmt.Println(post)
 	this.Data["post"] = post
 }
 
@@ -92,7 +91,7 @@ func (this *PostsControllers) Save() {
 	posts.Summary = this.GetString("post_summary")
 	post_content := this.GetString("post_content")
 	posts.HtmlContent = post_content
-	posts.TextContent = post_content
+	posts.TextContent = this.GetString("text_content")
 	//保存到处理map里
 	save_info := make(map[string]interface{})
 	save_info["post"] = posts

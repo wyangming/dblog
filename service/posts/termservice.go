@@ -35,7 +35,7 @@ var ent_term_service = &termService{}
 type termService struct {
 }
 
-func (this termService) DeleteById(id int64) (int, error) {
+func (this *termService) DeleteById(id int64) (int, error) {
 	if id < 1 {
 		return 1, nil
 	}
@@ -57,31 +57,31 @@ func (this termService) DeleteById(id int64) (int, error) {
 	}
 	return 1, nil
 }
-func (this termService) SaveTerm(term *models.DbTerms) error {
+func (this *termService) SaveTerm(term *models.DbTerms) error {
 	terDao := posts.AutoTermDao()
 	return terDao.SaveTerm(term)
 
 }
-func (this termService) RepeadByUrl(url string, siteid, id int64) (bool, error) {
+func (this *termService) RepeadByUrl(url string, siteid, id int64) (bool, error) {
 	terDao := posts.AutoTermDao()
 	return terDao.RepeadByUrl(url, siteid, id)
 }
 
 //查询栏目信息
-func (this termService) Find(offset, rows int64, filter *map[string]interface{}) (nums int64, terms []posts.ViewTerms, err error) {
+func (this *termService) Find(offset, rows int64, filter *map[string]interface{}) (nums int64, terms []posts.ViewTerms, err error) {
 	terDao := posts.AutoTermDao()
 	nums, terms, err = terDao.Find(offset, rows, filter)
 	return
 }
 
 //根据id查询一个栏目
-func (this termService) FindById(id int64) (posts.ViewTerms, error) {
+func (this *termService) FindById(id int64) (posts.ViewTerms, error) {
 	terDao := posts.AutoTermDao()
 	return terDao.FindById(id)
 }
 
 //查询所有的栏目信息
-func (this termService) FindAll() ([]models.DbTerms, error) {
+func (this *termService) FindAll() ([]models.DbTerms, error) {
 	terDao := posts.AutoTermDao()
 	return terDao.FindAll()
 }

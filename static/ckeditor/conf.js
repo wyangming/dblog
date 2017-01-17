@@ -14,6 +14,5 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'about', groups: [ 'about' ] },
 		{ name: 'document', groups: [ 'mode', 'document', 'doctools' ] }
 	];
-
 	config.removeButtons = 'Underline,Subscript,Superscript,About,SpecialChar,Maximize,Blockquote,Anchor,Scayt,Cut,Copy,Paste,PasteText,PasteFromWord,Undo,Redo,Outdent,Indent';
 };

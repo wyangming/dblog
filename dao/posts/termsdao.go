@@ -50,7 +50,7 @@ var (
 )
 
 //查询所有的栏目信息
-func (this termDao) FindAll() ([]models.DbTerms, error) {
+func (this *termDao) FindAll() ([]models.DbTerms, error) {
 	db := dao.NewDB()
 	rows, err := db.Query(fmt.Sprintf("select %s from %s where active=0", termTableColumn(""), "db_terms"))
 	defer rows.Close()
@@ -86,7 +86,7 @@ func (this termDao) FindAll() ([]models.DbTerms, error) {
 	}
 	return terms, nil
 }
-func (this termDao) DeleteById(id int64) (bool, error) {
+func (this *termDao) DeleteById(id int64) (bool, error) {
 	if id < 1 {
 		return false, nil
 	}
@@ -103,7 +103,7 @@ func (this termDao) DeleteById(id int64) (bool, error) {
 	}
 	return false, nil
 }
-func (this termDao) FindById(id int64) (ViewTerms, error) {
+func (this *termDao) FindById(id int64) (ViewTerms, error) {
 	//查询表与查询条件
 	from_end := "db_terms t left join db_terms p on t.parent_id=p.id left join db_user u on t.create_user=u.id where t.active=0 and t.id=?"
 	//参数
@@ -123,7 +123,7 @@ func (this termDao) FindById(id int64) (ViewTerms, error) {
 }
 
 //查询栏目信息
-func (this termDao) Find(offset, pagesize int64, filter *map[string]interface{}) (nums int64, terms []ViewTerms, err error) {
+func (this *termDao) Find(offset, pagesize int64, filter *map[string]interface{}) (nums int64, terms []ViewTerms, err error) {
 	if pagesize < 1 {
 		return 0, nil, nil
 	}
@@ -184,7 +184,7 @@ func viewTerms(rows *sql.Rows) (ViewTerms, error) {
 }
 
 //保存一个栏目信息
-func (this termDao) SaveTerm(term *models.DbTerms) error {
+func (this *termDao) SaveTerm(term *models.DbTerms) error {
 	if term.Id < 1 {
 		_, err := saveTerm(term)
 		return err
@@ -194,7 +194,7 @@ func (this termDao) SaveTerm(term *models.DbTerms) error {
 }
 
 //查询url是否重复
-func (this termDao) RepeadByUrl(url string, siteid, id int64) (bool, error) {
+func (this *termDao) RepeadByUrl(url string, siteid, id int64) (bool, error) {
 	if len(url) < 1 || siteid < 1 {
 		return true, nil
 	}

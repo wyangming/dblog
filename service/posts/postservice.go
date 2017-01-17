@@ -31,19 +31,19 @@ type postService struct {
 }
 
 //保存文章信息
-func (this postService) SavePost(info map[string]interface{}) (bool, error) {
+func (this *postService) SavePost(info map[string]interface{}) (bool, error) {
 	postsDao := posts.AutoPostsDao()
 	return postsDao.SavePost(info)
 }
 
 //查询文章信息
-func (this postService) Find(offset, rows int64, filter *map[string]interface{}) (nums int64, terms []posts.ViewPosts, err error) {
+func (this *postService) Find(offset, rows int64, filter *map[string]interface{}) (nums int64, terms []posts.ViewPosts, err error) {
 	postsDao := posts.AutoPostsDao()
 	return postsDao.Find(offset, rows, filter)
 }
 
 //根据编号查询
-func (this postService) FindById(id int64) (posts.ViewPosts, error) {
+func (this *postService) FindById(id int64) (posts.ViewPosts, error) {
 	if id < 1 {
 		return posts.ViewPosts{}, nil
 	}
@@ -52,7 +52,7 @@ func (this postService) FindById(id int64) (posts.ViewPosts, error) {
 }
 
 //修改文章状态
-func (this postService) UpdateStatus(id int64, type_str string) (bool, error) {
+func (this *postService) UpdateStatus(id int64, type_str string) (bool, error) {
 	if id < 1 || len(type_str) < 1 {
 		return false, nil
 	}

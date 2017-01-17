@@ -53,7 +53,7 @@ type DbTermPosts struct {
 //栏目信息
 type DbTerms struct {
 	Id int64
-	//栏目标签
+	//栏目名称
 	TermName string `orm:"null"`
 	//栏目标签
 	TermTag string `orm:"null"`
@@ -63,7 +63,7 @@ type DbTerms struct {
 	Description string `orm:"null"`
 	//父级栏目编号
 	ParentId int64
-	//用于生成栏目的url字符串
+	//用于生成栏目的url字符串，如果栏目是一个外链接直接写地址
 	Slug string
 	//最后更新时间
 	UpdateTime time.Time `orm:"auto_now"`

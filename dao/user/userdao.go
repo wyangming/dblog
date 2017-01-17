@@ -33,7 +33,7 @@ func tableColumn(table_alias string) string {
 }
 
 //根据用户名查的用户
-func (this userDao) FindByName(username string) (*models.DbUser, error) {
+func (this *userDao) FindByName(username string) (*models.DbUser, error) {
 	user := &models.DbUser{}
 	if len(username) < 1 {
 		return user, nil

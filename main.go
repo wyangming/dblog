@@ -33,6 +33,12 @@ func main() {
 //链接注册
 func router_reg() {
 	fmt.Println("router regin begin...")
+	main := &controllers.MainController{}
+	//文章页面信息
+	beego.Router("/:id([0-9]+).html", main, "*:Posts")
+	//栏目页面
+	beego.Router("/:id", main, "*:Term")
+
 	//登录页面
 	beego.Router("/login", &controllers.LoginController{})
 	//后台主页面

@@ -23,7 +23,7 @@ var ent_user_service = &userService{}
 type userService struct {
 }
 
-func (this userService) Login(username, pwd string) (*models.DbUser, bool, error) {
+func (this *userService) Login(username, pwd string) (*models.DbUser, bool, error) {
 	userDao := user.AutoUserDao()
 	user, err := userDao.FindByName(username)
 	if user.Id < 1 {

@@ -7,8 +7,39 @@
 </head>
 
 <body>
-<h1>乖乖，这是网站首页</h1>
-{{.msg}}<br/>
-这是方法：{{mymain}}
+<table class="table">
+			<thead>
+				<th>标题</th>
+				<th>作者</th>
+				<th>栏目</th>
+				<th>标签</th>
+				<th>发布时间</th>
+				<th>摘要</th>
+				<th>内容</th>
+			</thead>
+			{{if .posts}}
+		  		{{range $k,$v := .posts}}
+		  			<tr>
+		          		<td>
+		          			<a href="/{{$v.Id}}.html">{{$v.Title}}</a>
+		          		</td>
+		  				<td>{{$v.Author}}</td>
+		  				<td>{{$v.PTermName}}</td>
+		  				<td>{{$v.Tags}}</td>
+		  				<td>
+		  					{{if eq 2 $v.Active}}
+		  						草稿<br>
+		  						<abbr style="font-size: 0.9rem" title="{{$v.UpdateTime}}">{{dateformat $v.UpdateTime "2006-01-02"}}</abbr>
+		  					{{else}}
+		  						已发布<br>
+		  						<abbr style="font-size: 0.9rem" title="{{$v.UpdateTime}}">{{dateformat $v.ReleaseTime "2006-01-02"}}</abbr>
+		  					{{end}}
+		  				</td>
+		  				<td>{{$v.Summary}}</td>
+		  				<td>{{$v.HtmlContent}}</td>
+		  			</tr>
+		  		{{end}}
+		  	{{end}}
+		</table>
 </body>
 </html>

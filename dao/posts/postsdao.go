@@ -19,7 +19,7 @@ type IPostsDao interface {
 	//保存文章信息
 	SavePost(info map[string]interface{}) (bool, error)
 	//查询文章信息
-	Find(offset, rows int64, filter *map[string]interface{}) (nums int64, terms []ViewPosts, err error)
+	Find(offset, rows int64, filter map[string]interface{}) (nums int64, terms []ViewPosts, err error)
 	//根据编号查询
 	FindById(id int64) (ViewPosts, error)
 	//单独修改一个属性的值
@@ -93,17 +93,43 @@ func (this *postsDao) FindById(id int64) (term ViewPosts, err error) {
 	return
 }
 
+//处理map里一个bool类型，如果空或者不是bool类型返回false
+func con2sum(key string, filter map[string]interface{}) bool {
+	int_key, int_ok := filter[key]
+	if !int_ok {
+		return false
+	}
+	val_key, bol_ok := int_key.(bool)
+	if !bol_ok {
+		return false
+	}
+	return val_key
+}
+
 //查询文章信息
-func (this *postsDao) Find(offset, pagesize int64, filter *map[string]interface{}) (nums int64, terms []ViewPosts, err error) {
+func (this *postsDao) Find(offset, pagesize int64, filter map[string]interface{}) (nums int64, terms []ViewPosts, err error) {
 	if pagesize < 1 {
 		return
 	}
 	columns := fmt.Sprintf("%s, tp.term_id, t.term_name, u.user_name", postsTableColumn("p"))
-	//去掉文章的两个内容
-	columns = strings.Replace(columns, ", p.summary, p.html_content, p.text_content", "", 1)
+	//处理文章摘要内容
+	hasum := con2sum("hasum", filter)
+	if !hasum {
+		columns = strings.Replace(columns, ", p.summary", "", 1)
+	}
+	hascon := con2sum("hascon", filter)
+	if !hascon {
+		columns = strings.Replace(columns, ", p.html_content, p.text_content", "", 1)
+	}
 	from_end := "db_posts p left join db_term_posts tp on p.id=tp.post_id left join db_terms t on tp.term_id=t.id left join db_user u on p.create_user=u.id where 1=1"
 	//参数
 	params := make([]interface{}, 0)
+	//文章的状态
+	post_active, post_active_ok := filter["post_active"]
+	if post_active_ok {
+		from_end = fmt.Sprintf("%s and p.active=?", from_end)
+		params = append(params, post_active)
+	}
 	db := dao.NewDB()
 	//查询总条数
 	nums = dao.Count(from_end, "p.id", db, nil)
@@ -117,7 +143,7 @@ func (this *postsDao) Find(offset, pagesize int64, filter *map[string]interface{
 		return
 	}
 	for rows.Next() {
-		term, err := viewPost(rows, false, false)
+		term, err := viewPost(rows, hascon, hasum)
 		if err == nil {
 			terms = append(terms, term)
 		}

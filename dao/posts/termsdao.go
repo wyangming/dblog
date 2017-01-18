@@ -18,7 +18,7 @@ type ITermDao interface {
 	//id是过滤掉修改时自己url
 	RepeadByUrl(url string, siteid, id int64) (bool, error)
 	//查询栏目信息
-	Find(offset, rows int64, filter *map[string]interface{}) (nums int64, terms []ViewTerms, err error)
+	Find(offset, rows int64, filter map[string]interface{}) (nums int64, terms []ViewTerms, err error)
 	//根据id查询一个栏目
 	FindById(id int64) (ViewTerms, error)
 	//根据id删除一个栏目
@@ -123,7 +123,7 @@ func (this *termDao) FindById(id int64) (ViewTerms, error) {
 }
 
 //查询栏目信息
-func (this *termDao) Find(offset, pagesize int64, filter *map[string]interface{}) (nums int64, terms []ViewTerms, err error) {
+func (this *termDao) Find(offset, pagesize int64, filter map[string]interface{}) (nums int64, terms []ViewTerms, err error) {
 	if pagesize < 1 {
 		return 0, nil, nil
 	}

@@ -11,7 +11,7 @@ type IPostService interface {
 	//保存文章信息
 	SavePost(info map[string]interface{}) (bool, error)
 	//查询文章信息
-	Find(offset, rows int64, filter *map[string]interface{}) (nums int64, terms []posts.ViewPosts, err error)
+	Find(offset, rows int64, filter map[string]interface{}) (nums int64, terms []posts.ViewPosts, err error)
 	//根据编号查询
 	FindById(id int64) (posts.ViewPosts, error)
 	//修改文章状态
@@ -37,7 +37,7 @@ func (this *postService) SavePost(info map[string]interface{}) (bool, error) {
 }
 
 //查询文章信息
-func (this *postService) Find(offset, rows int64, filter *map[string]interface{}) (nums int64, terms []posts.ViewPosts, err error) {
+func (this *postService) Find(offset, rows int64, filter map[string]interface{}) (nums int64, terms []posts.ViewPosts, err error) {
 	postsDao := posts.AutoPostsDao()
 	return postsDao.Find(offset, rows, filter)
 }

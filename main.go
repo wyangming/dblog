@@ -6,10 +6,13 @@ package main
 //栏目添加修改时没有用js验证
 //文章添加修改时没有用js验证，预览功能也没有做
 
+//20170118在办公室提交
+
 import (
 	"dblog/controllers"
 	"dblog/controllers/sys"
 	"dblog/controllers/sys/posts"
+	"dblog/controllers/web"
 	_ "dblog/dao"
 	_ "dblog/routers"
 	"fmt"
@@ -33,11 +36,11 @@ func main() {
 //链接注册
 func router_reg() {
 	fmt.Println("router regin begin...")
-	main := &controllers.MainController{}
+	main := &web.MainController{}
 	//文章页面信息
 	beego.Router("/:id([0-9]+).html", main, "*:Posts")
 	//栏目页面
-	beego.Router("/:id", main, "*:Term")
+	beego.Router("/:id([a-z]|[A-Z]|[0-9])+", main, "*:Term")
 
 	//登录页面
 	beego.Router("/login", &controllers.LoginController{})

@@ -14,7 +14,7 @@ type ITermService interface {
 	//id是过滤掉修改时自己url
 	RepeadByUrl(url string, siteid, id int64) (bool, error)
 	//查询栏目信息
-	Find(offset, rows int64, filter *map[string]interface{}) (nums int64, terms []posts.ViewTerms, err error)
+	Find(offset, rows int64, filter map[string]interface{}) (nums int64, terms []posts.ViewTerms, err error)
 	//根据id查询一个栏目
 	FindById(id int64) (posts.ViewTerms, error)
 	//根据id删除一个栏目信息
@@ -68,7 +68,7 @@ func (this *termService) RepeadByUrl(url string, siteid, id int64) (bool, error)
 }
 
 //查询栏目信息
-func (this *termService) Find(offset, rows int64, filter *map[string]interface{}) (nums int64, terms []posts.ViewTerms, err error) {
+func (this *termService) Find(offset, rows int64, filter map[string]interface{}) (nums int64, terms []posts.ViewTerms, err error) {
 	terDao := posts.AutoTermDao()
 	nums, terms, err = terDao.Find(offset, rows, filter)
 	return

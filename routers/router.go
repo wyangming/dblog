@@ -1,10 +1,10 @@
 package routers
 
 import (
-	"dblog/controllers"
+	"dblog/controllers/web"
 	"github.com/astaxie/beego"
 )
 
 func init() {
-    beego.Router("/", &controllers.MainController{})
+	beego.Router("/", &web.MainController{})
 }

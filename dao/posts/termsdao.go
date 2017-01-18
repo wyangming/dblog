@@ -21,6 +21,8 @@ type ITermDao interface {
 	Find(offset, rows int64, filter map[string]interface{}) (nums int64, terms []ViewTerms, err error)
 	//根据id查询一个栏目
 	FindById(id int64) (ViewTerms, error)
+	//根据url查询一个栏目
+	FindBySlug(slug string) (ViewTerms, error)
 	//根据id删除一个栏目
 	DeleteById(id int64) (bool, error)
 	//查询所有的栏目信息
@@ -109,6 +111,26 @@ func (this *termDao) FindById(id int64) (ViewTerms, error) {
 	//参数
 	params := make([]interface{}, 0)
 	params = append(params, id)
+	db := dao.NewDB()
+	var term ViewTerms
+	rows, err := db.Query(fmt.Sprintf("select %s from %s", COLUMNS, from_end), params...)
+	defer rows.Close()
+	if err != nil {
+		return term, err
+	}
+	for rows.Next() {
+		term, err = viewTerms(rows)
+	}
+	return term, err
+}
+
+//根据url查询一个栏目
+func (this *termDao) FindBySlug(slug string) (ViewTerms, error) {
+	//查询表与查询条件
+	from_end := "db_terms t left join db_terms p on t.parent_id=p.id left join db_user u on t.create_user=u.id where t.active=0 and t.slug=?"
+	//参数
+	params := make([]interface{}, 0)
+	params = append(params, slug)
 	db := dao.NewDB()
 	var term ViewTerms
 	rows, err := db.Query(fmt.Sprintf("select %s from %s", COLUMNS, from_end), params...)

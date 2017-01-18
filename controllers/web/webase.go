@@ -4,6 +4,7 @@ import (
 	"dblog/controllers"
 	"dblog/service/posts"
 	"dblog/util/pagination"
+	//"fmt"
 	"github.com/astaxie/beego"
 )
 
@@ -27,31 +28,82 @@ type MainController struct {
 
 //首页
 func (this *MainController) Get() {
+	findPosts(this, true)
+	pubInfo(this)
+	this.TplName = "index.html"
+}
+func pubInfo(this *MainController) {
+	postService := posts.AutoPostsService()
+	//文章总数
+	archsNum := postService.PostsNum()
+	this.Data["postsNum"] = archsNum
+	//栏目处理
+	termService := posts.AutoTermService()
+	nums, terms, err := termService.Find(0, 100, nil)
+	if err != nil {
+		beego.Error(err)
+	}
+	this.Data["terms"] = terms
+	this.Data["termNum"] = nums
+}
+func findPosts(this *MainController, isIndex bool) {
+	//首页文章处理
 	postService := posts.AutoPostsService()
 	filter := make(map[string]interface{})
 	filter["post_active"] = 0
-	//filter["hasum"] = true
+	if isIndex {
+		filter["hasum"] = true
+	} else {
+		slug := this.GetString(":id")
+		filter["slug"] = slug
+	}
 	//filter["hascon"] = true
-	nums, posts, err := postService.Find(0, 20, filter)
+	pageCur, _ := this.GetInt("paged")
+	offset := int64(0)
+	pageSize := int64(10)
+	if pageCur > 1 {
+		offset = (int64(pageCur) - 1) * pageSize
+	}
+	nums, archs, err := postService.Find(offset, pageSize, filter)
+	//数据库是从0开始计数的
+	page := pagination.NewPaginator(offset+1, pageSize, nums)
 	if err != nil {
 		beego.Error(err)
 		return
 	}
-	//数据库是从0开始计数的
-	page := pagination.NewPaginator(1, 20, nums)
-	this.Data["posts"] = posts
+	this.Data["posts"] = archs
 	this.Data["page"] = page
-	this.TplName = "index.html"
 }
 
 //网站文章
 func (this *MainController) Posts() {
-	this.Data["msg"] = "Posts test " + this.GetString(":id")
 	this.TplName = "post.html"
+	pubInfo(this)
+	id, err := this.GetInt64(":id")
+	if err != nil {
+		beego.Error(err)
+		return
+	}
+	postService := posts.AutoPostsService()
+	post, err := postService.FindById(id)
+	if err != nil {
+		beego.Error(err)
+		return
+	}
+	this.Data["post"] = post
 }
 
 //网站栏目
 func (this *MainController) Term() {
-	this.Data["msg"] = "Term test " + this.GetString(":id")
-	this.TplName = "index.html"
+	this.TplName = "term.html"
+	pubInfo(this)
+	findPosts(this, false)
+	sulg := this.GetString(":id")
+	//栏目处理
+	termService := posts.AutoTermService()
+	term, err := termService.FindBySlug(sulg)
+	if err != nil {
+		beego.Error(err)
+	}
+	this.Data["term"] = term
 }

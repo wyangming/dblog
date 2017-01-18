@@ -17,6 +17,8 @@ type IPostService interface {
 	//修改文章状态
 	//type_str操作类型replase发布 del删除
 	UpdateStatus(id int64, type_str string) (bool, error)
+	//查询发布文章的总数
+	PostsNum() int64
 }
 
 //得到接口实例
@@ -28,6 +30,12 @@ func AutoPostsService() IPostService {
 var ent_posts_service = &postService{}
 
 type postService struct {
+}
+
+//查询发布文章的总数
+func (this *postService) PostsNum() int64 {
+	postsDao := posts.AutoPostsDao()
+	return postsDao.PostsNum()
 }
 
 //保存文章信息

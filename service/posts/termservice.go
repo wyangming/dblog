@@ -17,6 +17,8 @@ type ITermService interface {
 	Find(offset, rows int64, filter map[string]interface{}) (nums int64, terms []posts.ViewTerms, err error)
 	//根据id查询一个栏目
 	FindById(id int64) (posts.ViewTerms, error)
+	//根据url查询一个栏目
+	FindBySlug(slug string) (posts.ViewTerms, error)
 	//根据id删除一个栏目信息
 	//return int 0删除success 1删除fail 2栏目下有文章
 	DeleteById(id int64) (int, error)
@@ -78,6 +80,12 @@ func (this *termService) Find(offset, rows int64, filter map[string]interface{})
 func (this *termService) FindById(id int64) (posts.ViewTerms, error) {
 	terDao := posts.AutoTermDao()
 	return terDao.FindById(id)
+}
+
+//根据url查询一个栏目
+func (this *termService) FindBySlug(slug string) (posts.ViewTerms, error) {
+	terDao := posts.AutoTermDao()
+	return terDao.FindBySlug(slug)
 }
 
 //查询所有的栏目信息

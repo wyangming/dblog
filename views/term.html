@@ -1,13 +1,112 @@
 <!DOCTYPE html>
-
 <html>
 <head>
-  <title>Beego</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>{{.term.TermName}}</title>
+	<meta charset="utf-8" />
+	<meta name="keywords" content="{{.term.TermName}},伯安博客"/>
+	<meta name="description" content="{{.term.TermName}}"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<link rel='stylesheet' href='/static/web/css/style.css' type='text/css' media='all' />
+	<script type='text/javascript' src='/static/web/js/jquery.min.js'></script>
 </head>
-
 <body>
-<h1>乖乖，这是网站列表</h1>
-{{.msg}}<br/>
+	<div id="main" class="wp uk-grid uk-grid-collapse">
+        <div class="uk-width-small-1-1 uk-width-medium-1-4 uk-width-large-1-5">
+    				<div id="head" data-uk-sticky="{boundary: true}">
+            			<div class="uk-panel">
+            				<div class="tx">
+            						            						<img src="http://www.f273c.com/wp-content/themes/jijian/img/default.jpg" />
+        							            				</div>
+				   		<h1 class="uk-panel-title">伯安</h1>
+				    		<span> <a href="http://www.f273c.com" style="color: rgba(0,0,0,0.8);">互联网博客</a></span>
+				    		<div class="my uk-grid-collapse uk-grid uk-grid-width-1-3">
+				    			<div>	
+				    				<span>{{.postsNum}}</span>
+				    				<span><i class="uk-icon-file-text"></i></span>
+				    				<a href="javascript:void(0)" title="总文章" data-uk-tooltip="{pos:'bottom'}"></a>
+				    			</div>
+				    			<div>
+				    				<span>{{.termNum}}</span>
+				    				<span><i class="uk-icon-folder"></i></span>
+				    				<a href="javascript:void(0)" title="栏目数" data-uk-tooltip="{pos:'bottom'}"></a>
+				    			</div>
+				    			<div>
+				    				<span>0</span>
+				    				<span><i class="uk-icon-tags"></i></span>
+				    				<a href="javascript:void(0)" title="留言" data-uk-tooltip="{pos:'bottom'}"></a>					    				
+				    			</div>
+				    		</div>
+				    		<ul id="nav-top" class="uk-nav">
+				    		{{if .terms}}
+				    			{{range $k,$v := .terms}}
+				    				<li id="menu-item-31" class="" ><a href="{{$v.Slug}}">{{$v.TermName}}</a></li>
+				    			{{end}}
+				    		{{end}}
+</ul>					    		
+						    	
+
+					</div>
+					<div class="ft uk-hidden-small">
+			        		<p><a href="http://www.f273c.com" target="_black"> 伯安</a> 出品</p>
+			        </div>				
+        		</div>
+        		
+        </div>            <div class="uk-width-small-1-1 uk-width-medium-3-4 uk-width-large-4-5">
+        		<div id="index" class="bs">
+        			<h4>{{.term.TermName}}</h4>
+        			<div id="list">
+
+
+			{{if .posts}}
+		  		{{range $k,$v := .posts}}
+		  			<article class="article">
+		  				<h1><a href="/{{$v.Id}}.html">{{$v.Title}}</a></h1>
+		  				<p>
+			  				{{$v.Summary}}
+			  				<time><br>{{dateformat $v.ReleaseTime "2006-01-02"}}</time>
+		  				</p>
+		  			</article>
+		  		{{end}}
+		  	{{else}}
+		  		<article class="article">
+		  				<h1><a href="javascript:void(0)">没有找到你要的信息</a></h1>
+		  		</article>
+		  	{{end}}
+          			</div>
+        		</div>
+				<ul class="uk-pagination">
+					{{.page}}
+					{{if .page}}
+					    {{if .page.HasPrev}}
+					    	<li>
+					    		<a href="?paged={{$.page.FirstPage}}"> << </a>
+					    	</li>
+					    	<li>
+					    		<a href="?paged={{$.page.PrevPage}}"> < </a>
+					    	</li>
+					    {{end}}
+					    {{range $index, $pagesingle := .page.Pages}}
+					        {{if $.page.IsActive .}}
+					          <li class='uk-active' ><span>{{$pagesingle}}</span></li>
+					        {{else}}
+					          <li><a href="?paged={{$pagesingle}}">{{$pagesingle}}</a></li>
+					        {{end}}
+					    {{end}}
+					    {{if .page.HasNext}}
+					    	<li>
+					    		<a href="?paged={{$.page.NextPage}}"> > </a>
+					    	</li>
+					    	<li>
+					    		<a href="?paged={{$.page.LastPage}}"> >> </a>
+					    	</li>
+					    {{end}}
+					{{end}}
+				</ul>
+			<div class="ft uk-visible-small">
+	        		<p><a href="http://www.f273c.com" target="_black"> 伯安</a> 出品</p>
+	        </div>
+        </div>
+    </div>
+
 </body>
 </html>

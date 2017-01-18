@@ -1,14 +1,84 @@
-
 <!DOCTYPE html>
-
 <html>
 <head>
-  <title>Beego</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>{{.term.TermName}}</title>
+	<meta charset="utf-8" />
+	<meta name="keywords" content="{{.term.TermName}},伯安博客"/>
+	<meta name="description" content="{{.term.TermName}}"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<link rel='stylesheet' href='/static/web/css/style.css' type='text/css' media='all' />
+	<script type='text/javascript' src='/static/web/js/jquery.min.js'></script>
 </head>
-
 <body>
-<h1>乖乖，这是网站内容</h1>
-{{.msg}}<br/>
+	<div id="main" class="wp uk-grid uk-grid-collapse">
+        <div class="uk-width-small-1-1 uk-width-medium-1-4 uk-width-large-1-5">
+    				<div id="head" data-uk-sticky="{boundary: true}">
+            			<div class="uk-panel">
+            				<div class="tx">
+            						            						<img src="http://www.f273c.com/wp-content/themes/jijian/img/default.jpg" />
+        							            				</div>
+				   		<h1 class="uk-panel-title">伯安</h1>
+				    		<span> <a href="http://www.f273c.com" style="color: rgba(0,0,0,0.8);">互联网博客</a></span>
+				    		<div class="my uk-grid-collapse uk-grid uk-grid-width-1-3">
+				    			<div>	
+				    				<span>{{.postsNum}}</span>
+				    				<span><i class="uk-icon-file-text"></i></span>
+				    				<a href="javascript:void(0)" title="总文章" data-uk-tooltip="{pos:'bottom'}"></a>
+				    			</div>
+				    			<div>
+				    				<span>{{.termNum}}</span>
+				    				<span><i class="uk-icon-folder"></i></span>
+				    				<a href="javascript:void(0)" title="栏目数" data-uk-tooltip="{pos:'bottom'}"></a>
+				    			</div>
+				    			<div>
+				    				<span>0</span>
+				    				<span><i class="uk-icon-tags"></i></span>
+				    				<a href="javascript:void(0)" title="留言" data-uk-tooltip="{pos:'bottom'}"></a>					    				
+				    			</div>
+				    		</div>
+				    		<ul id="nav-top" class="uk-nav">
+				    		{{if .terms}}
+				    			{{range $k,$v := .terms}}
+				    				<li id="menu-item-31" class="" ><a href="{{$v.Slug}}">{{$v.TermName}}</a></li>
+				    			{{end}}
+				    		{{end}}
+</ul>					    		
+						    	
+
+					</div>
+					<div class="ft uk-hidden-small">
+			        		<p><a href="http://www.f273c.com" target="_black"> 伯安</a> 出品</p>
+			        </div>				
+        		</div>
+        		
+        </div>            <div class="uk-width-small-1-1 uk-width-medium-3-4 uk-width-large-4-5">
+        		<div id="index" class="bs">
+        			<article id="article" class="uk-article">
+        			<h1 class="uk-article-title">{{.post.Title}}	</h1>
+					<time class="uk-article-meta"><i class="uk-icon-calendar"></i>{{dateformat .post.ReleaseTime "2006-01-02"}}</time>
+
+
+
+
+{{.post.HtmlContent}}
+
+
+
+							<div class="tags uk-clearfix">
+								<div class="tags uk-float-left"><i class="uk-icon-folder"></i> <a href="javascript:void(0)">{{.post.PTermName}}</a></div>				
+								<div class="uk-float-right"></div>					
+							</div>
+
+
+
+
+
+
+
+					</article>
+        		</div>
+        </div>
+    </div>
+
 </body>
 </html>

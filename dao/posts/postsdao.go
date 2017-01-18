@@ -24,6 +24,8 @@ type IPostsDao interface {
 	FindById(id int64) (ViewPosts, error)
 	//单独修改一个属性的值
 	UpdateSinglePro(id int64, proName string, val interface{}) (bool, error)
+	//查询发布文章的总数
+	PostsNum() int64
 }
 
 func AutoPostsDao() IPostsDao {
@@ -46,6 +48,25 @@ type ViewPosts struct {
 	TermId int64
 	//副栏目编号名称信息
 	TtermF map[int64]string
+}
+
+//查询发布文章的总数
+func (this *postsDao) PostsNum() int64 {
+	sel_sql := "select count(id) from db_posts where active=0"
+	db := dao.NewDB()
+	rows, err := db.Query(sel_sql)
+	defer rows.Close()
+	if err != nil {
+		return 0
+	}
+	for rows.Next() {
+		var count sql.NullInt64
+		rows.Scan(&count)
+		if count.Valid {
+			return count.Int64
+		}
+	}
+	return 0
 }
 
 //根据编号查询
@@ -130,13 +151,27 @@ func (this *postsDao) Find(offset, pagesize int64, filter map[string]interface{}
 		from_end = fmt.Sprintf("%s and p.active=?", from_end)
 		params = append(params, post_active)
 	}
+	//栏目编号
+	term_id, term_id_ok := filter["termid"]
+	if term_id_ok {
+		from_end = fmt.Sprintf("%s and tp.term_id=?", from_end)
+		params = append(params, term_id)
+	}
+	//栏目url
+	term_slug, term_slug_ok := filter["slug"]
+	if term_slug_ok {
+		from_end = fmt.Sprintf("%s and t.slug=?", from_end)
+		term_slug, _ = term_slug.(string)
+		params = append(params, term_slug)
+	}
+	from_end = fmt.Sprintf("%s and p.active!=1 and tp.active!=1 and t.active!=1 and u.active!=1", from_end)
 	db := dao.NewDB()
 	//查询总条数
-	nums = dao.Count(from_end, "p.id", db, nil)
+	nums = dao.Count(from_end, "p.id", db, params)
 	//设置分页查询
 	params = append(params, offset)
 	params = append(params, pagesize)
-	from_end = fmt.Sprintf("%s and p.active!=1 and tp.active!=1 and t.active!=1 and u.active!=1 order by p.update_time desc", from_end)
+	from_end = fmt.Sprintf("%s order by p.update_time desc", from_end)
 	rows, err := db.Query(fmt.Sprintf("select %s from %s", columns, dao.AppendPageInfo(from_end, offset, pagesize)), params...)
 	defer rows.Close()
 	if err != nil {

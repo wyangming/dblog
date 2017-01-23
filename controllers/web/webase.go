@@ -4,7 +4,7 @@ import (
 	"dblog/controllers"
 	"dblog/service/posts"
 	"dblog/util/pagination"
-	//"fmt"
+	"fmt"
 	"github.com/astaxie/beego"
 )
 
@@ -55,6 +55,7 @@ func findPosts(this *MainController, isIndex bool) {
 		filter["hasum"] = true
 	} else {
 		slug := this.GetString(":id")
+		filter["hasum"] = true
 		filter["slug"] = slug
 	}
 	//filter["hascon"] = true
@@ -90,6 +91,7 @@ func (this *MainController) Posts() {
 		beego.Error(err)
 		return
 	}
+	fmt.Println(post.HtmlContent)
 	this.Data["post"] = post
 }
 

@@ -379,9 +379,9 @@ func postTermParams(params *[]interface{}, postid, termsid int64, mainTerm bool)
 //修改一个文章信息
 func update(db *sql.Tx, post *models.DbPosts) (bool, error) {
 	update_sql := "update db_posts set title=?, shot_title=?, tags=?, source_url=?, author=?, summary=?, html_content=?, text_content=?," +
-		" release_time=?, update_time=?, create_time=?, create_user=?, site_id=? where id=? and active!=1"
+		" update_time=?, create_user=?, site_id=? where id=? and active!=1"
 	res, err := db.Exec(update_sql, post.Title, post.ShotTitle, post.Tags, post.SourceUrl,
-		post.Author, post.Summary, post.HtmlContent, post.TextContent, post.ReleaseTime, post.UpdateTime, post.CreateTime,
+		post.Author, post.Summary, post.HtmlContent, post.TextContent, time.Now(),
 		post.CreateUser, post.SiteId, post.Id)
 	if err != nil {
 		return false, err

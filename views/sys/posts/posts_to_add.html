@@ -64,7 +64,7 @@
 				<!-- 文章内容 -->
 				<fieldset class="form-group">
 					<label for="post_content">{{i18n .Lang "page_sys_post_add_lable_context"}}</label>
-					<textarea id="post_content" name="post_content">{{.post.HtmlContent}}</textarea>
+					<textarea id="post_content" name="post_content">{{str2html .post.HtmlContent}}</textarea>
 					<input type="hidden" name="text_content" id="text_content" value="{{.post.TextContent}}">
 				</fieldset>
 				<!-- 表单按钮 -->

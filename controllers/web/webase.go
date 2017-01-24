@@ -4,7 +4,6 @@ import (
 	"dblog/controllers"
 	"dblog/service/posts"
 	"dblog/util/pagination"
-	"fmt"
 	"github.com/astaxie/beego"
 )
 
@@ -91,7 +90,6 @@ func (this *MainController) Posts() {
 		beego.Error(err)
 		return
 	}
-	fmt.Println(post.HtmlContent)
 	this.Data["post"] = post
 }
 

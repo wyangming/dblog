@@ -3,6 +3,7 @@ package posts
 import (
 	"dblog/controllers/sys"
 	"dblog/models"
+	serOptions "dblog/service/options"
 	"dblog/service/posts"
 	"dblog/util/pagination"
 	"dblog/util/web"
@@ -20,7 +21,9 @@ func (this *TermControllers) Get() {
 	postService := posts.AutoTermService()
 	pageCur, _ := this.GetInt("paged")
 	offset := int64(0)
-	pageSize, _ := beego.AppConfig.Int64("sys_page_size")
+	site_id, _ := this.Ctx.Input.Session(web.SYS_SITEID).(int64)
+	pageSize := serOptions.SitePageSize(site_id)
+	//beego.AppConfig.Int64("sys_page_size")
 	if pageCur > 1 {
 		offset = (int64(pageCur) - 1) * pageSize
 	}

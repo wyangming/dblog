@@ -6,22 +6,22 @@ package main
 //栏目添加修改时没有用js验证
 //文章添加修改时没有用js验证，预览功能也没有做
 
-//20170118在家提交
+//
 
 import (
 	"dblog/controllers"
 	"dblog/controllers/sys"
+	"dblog/controllers/sys/options"
 	"dblog/controllers/sys/posts"
 	"dblog/controllers/web"
 	_ "dblog/dao"
 	_ "dblog/routers"
-	"fmt"
+	//"fmt"
 	"github.com/astaxie/beego"
 	"github.com/beego/i18n"
 )
 
 func init() {
-	fmt.Println("dblog begin start...")
 }
 
 func main() {
@@ -30,12 +30,10 @@ func main() {
 	router_reg()
 	filter_reg()
 	beego.Run()
-	fmt.Println("dblog over start...")
 }
 
 //链接注册
 func router_reg() {
-	fmt.Println("router regin begin...")
 	main := &web.MainController{}
 	//文章页面信息
 	beego.Router("/:id([0-9]+).html", main, "*:Posts")
@@ -74,36 +72,34 @@ func router_reg() {
 	//删除文章
 	beego.Router("/sys/posts/posts/del", postsCon, "*:Delete")
 
-	fmt.Println("router regin over...")
+	//系统设置
+	siteCon := &options.SiteControllers{}
+	//跳转到站点设置页面
+	beego.Router("/sys/options/site", siteCon)
+	beego.Router("/sys/options/site/save", siteCon, "*:Save")
 }
 
 //过滤器
 func filter_reg() {
-	fmt.Println("filter regin begin...")
 	//后台过滤器，检测是否有权限
 	beego.InsertFilter("/sys", beego.BeforeRouter, sys.SysAuthor)
 	beego.InsertFilter("/sys/**", beego.BeforeRouter, sys.SysAuthor)
-	fmt.Println("filter regin over...")
 }
 
 //国际化
 func i18n_reg() {
-	fmt.Println("i18n regin begin...")
 	//使用国际化时，需要导入beego的i18n包：go get github.com/beego/i18n
 	//注册国际化
 	i18n.SetMessage("zh-CN", "conf/locale_zh-CN.ini")
-	fmt.Println("i18n regin over...")
 }
 
 //模板注册
 func template_reg() {
-	fmt.Println("template regin begin...")
 	//经过注册后就可以在模版里使用i18n国际化
 	beego.AddFuncMap("i18n", i18n.Tr)
 
 	//测试用的的模板
 	//beego.AddFuncMap("my_TmpMethod", TmpMethod)
-	fmt.Println("template regin over...")
 }
 
 /*

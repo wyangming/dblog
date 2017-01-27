@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{{i18n .Lang "menu_options_site"}}</title>
+  {{template "sys/inc/meta.html" .}}
+</head>
+<body>
+{{template "sys/inc/left.html" .}}
+<div class="right-side">
+  <form action="/sys/options/site/save" method="post">
+    {{if .msg}}
+      <div class="alert alert-danger alert-dismissible fade in" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <strong>{{.msg}}</strong>
+      </div>
+    {{end}}
+    <input type="hidden" name="id" value="{{.site.Id}}" />
+    <!-- 站点标题 -->
+    <fieldset class="form-group">
+      <label for="site_name">{{i18n .Lang "page_sys_options_site_lable_title"}}</label>
+      <input type="text" class="form-control" id="site_name" name="site_name" placeholder="{{i18n .Lang "page_sys_options_site_lable_title"}}" value="{{.site.SiteName}}" />
+    </fieldset>
+    <!-- 站点副标题 -->
+    <fieldset class="form-group">
+      <label for="site_sub_title">{{i18n .Lang "page_sys_options_site_lable_subtitle"}}</label>
+      <input type="text" class="form-control" id="site_sub_title" name="site_sub_title" placeholder="{{i18n .Lang "page_sys_options_site_lable_subtitle"}}" value="{{.site.SiteSubTitle}}" />
+    </fieldset>
+    <!-- 网站的标签 -->
+    <fieldset class="form-group">
+      <label for="site_tag">{{i18n .Lang "page_sys_options_site_lable_tag"}}</label>
+      <input type="text" class="form-control" id="site_tag" name="site_tag" placeholder="{{i18n .Lang "page_sys_options_site_lable_tag"}}" value="{{.site.SiteTag}}" />
+      <small class="text-muted">{{i18n .Lang "page_sys_options_site_msg_tag"}}</small>
+    </fieldset>
+    <!-- 站点的url -->
+    <fieldset class="form-group">
+      <label for="site_url">{{i18n .Lang "page_sys_options_site_lable_url"}}</label>
+      <input type="text" class="form-control" id="site_url" name="site_url" placeholder="{{i18n .Lang "page_sys_options_site_lable_url"}}" value="{{.site.SiteUrl}}" />
+      <small class="text-muted">{{i18n .Lang "page_sys_options_site_msg_url"}}</small>
+    </fieldset>
+    <!-- 站点后台分页大小 -->
+    <fieldset class="form-group">
+      <label for="sys_page_size">{{i18n .Lang "page_sys_options_site_lable_pagesize"}}</label>
+      <input type="text" class="form-control" id="sys_page_size" name="sys_page_size" placeholder="{{i18n .Lang "page_sys_options_site_lable_pagesize"}}" value="{{.site.SysPageSize}}" />
+    </fieldset>
+    <!-- 站点描述 -->
+    <fieldset class="form-group">
+      <label for="site_desc">{{i18n .Lang "page_sys_options_site_lable_desc"}}</label>
+      <textarea class="form-control" id="site_desc" name="site_desc" placeholder="{{i18n .Lang "page_sys_options_site_lable_desc"}}">{{.site.SiteDesc}}</textarea>
+    </fieldset>
+    <input type="submit" id="btn_submit" class="btn btn-success" value="{{i18n .Lang "page_btn_save"}}" />
+  </form>
+</div>
+</body>
+</html>
+{{template "sys/inc/foot.html" .}}
+<script type="text/javascript">
+  jQuery(document).ready(function() {
+  });
+</script>

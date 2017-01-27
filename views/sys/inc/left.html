@@ -20,11 +20,13 @@
 	  <div class="panel panel-default">
 	    <div class="panel-heading" role="tab" id="heading2">
 	        <a class="panel-title list-group-item" data-toggle="collapse" data-parent="#accordion" href="#collapse2" aria-expanded="true" aria-controls="collapse2">
-	          常用2
+	          {{i18n .Lang "menu_options"}}
 	        </a>
 	    </div>
 	    <div id="collapse2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading2">
-	      常用内容2
+	    	<div class="list-group">
+	    		<a class="list-group-item" href="/sys/options/site">{{i18n .Lang "menu_options_site"}}</a>
+	    	</div>
 	    </div>
 	  </div>
 

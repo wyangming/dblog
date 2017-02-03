@@ -1,5 +1,8 @@
 # dblog
 
+连接mysql时参数太多会把参数占位符过多错误
+Error 1390: Prepared statement contains too many placeholders
+
 18003893362
 
 

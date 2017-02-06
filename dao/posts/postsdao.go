@@ -172,7 +172,7 @@ func (this *postsDao) Find(offset, pagesize int64, filter map[string]interface{}
 	params = append(params, offset)
 	params = append(params, pagesize)
 	from_end = fmt.Sprintf("%s order by p.update_time desc", from_end)
-	rows, err := db.Query(fmt.Sprintf("select %s from %s", columns, dao.AppendPageInfo(from_end, offset, pagesize)), params...)
+	rows, err := db.Query(fmt.Sprintf("select %s from %s", columns, dao.AppendPageInfo(from_end)), params...)
 	defer rows.Close()
 	if err != nil {
 		return

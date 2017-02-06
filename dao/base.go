@@ -47,12 +47,13 @@ func Count(from_end, count_column string, db *sql.DB, params []interface{}) int6
 		return int64(0)
 	}
 	count_sql := ""
-	if len(count_column) < 1 {
+	if len(count_column) > 1 {
 		count_sql = strutil.StrAppend(count_sql, count_column)
 	} else {
 		count_sql = strutil.StrAppend(count_sql, "count(1)")
 	}
 	find_sql := fmt.Sprintf("select %s from %s", count_sql, from_end)
+	fmt.Println(find_sql)
 	rows, err := db.Query(find_sql, params...)
 	if err != nil {
 		return int64(0)
@@ -70,7 +71,6 @@ func Count(from_end, count_column string, db *sql.DB, params []interface{}) int6
 
 //追加分页信息
 //sql没有分而立信息的sql语句
-//offset,rows起始位置与偏移量
-func AppendPageInfo(sql string, offset, rows int64) string {
+func AppendPageInfo(sql string) string {
 	return strutil.StrAppend(sql, " limit ?, ?")
 }

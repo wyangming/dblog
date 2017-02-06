@@ -159,7 +159,7 @@ func (this *termDao) Find(offset, pagesize int64, filter map[string]interface{})
 	//设置分页查询
 	params = append(params, offset)
 	params = append(params, pagesize)
-	rows, err := db.Query(fmt.Sprintf("select %s from %s", COLUMNS, dao.AppendPageInfo(from_end, offset, pagesize)), params...)
+	rows, err := db.Query(fmt.Sprintf("select %s from %s", COLUMNS, dao.AppendPageInfo(from_end)), params...)
 	defer rows.Close()
 	if err != nil {
 		return

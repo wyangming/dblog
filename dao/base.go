@@ -48,7 +48,7 @@ func Count(from_end, count_column string, db *sql.DB, params []interface{}) int6
 	}
 	count_sql := ""
 	if len(count_column) > 1 {
-		count_sql = strutil.StrAppend(count_sql, count_column)
+		count_sql = fmt.Sprintf("%scount(%s)", count_sql, count_column)
 	} else {
 		count_sql = strutil.StrAppend(count_sql, "count(1)")
 	}

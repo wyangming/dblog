@@ -20,6 +20,9 @@ func (this *TermControllers) Get() {
 	this.TplName = "sys/posts/term.html"
 	postService := posts.AutoTermService()
 	pageCur, _ := this.GetInt("paged")
+	if pageCur < 1 {
+		pageCur = 1
+	}
 	offset := int64(0)
 	site_id, _ := this.Ctx.Input.Session(web.SYS_SITEID).(int64)
 	pageSize := serOptions.SitePageSize(site_id)
